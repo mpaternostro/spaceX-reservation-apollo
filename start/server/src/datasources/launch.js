@@ -14,7 +14,7 @@ class LaunchAPI extends RESTDataSource {
   }
 
   async getLaunchById({ launchId }) {
-    const response = await this.get("launches", launchId);
+    const [response] = await this.get("launches", launchId);
     return this.launchReducer(response);
   }
 
@@ -30,14 +30,14 @@ class LaunchAPI extends RESTDataSource {
       cursor: launch.launch_date_unix.toString(),
       site: launch.launch_site && launch.launch_site.site_name,
       mission: {
-        name: mission_name,
-        missionPatchSmall: links.mission_patch_small,
-        missionPatchLarge: links.mission_patch,
+        name: launch.mission_name,
+        missionPatchSmall: launch.links.mission_patch_small,
+        missionPatchLarge: launch.links.mission_patch,
       },
       rocket: {
-        id: rocket.rocket_id,
-        name: rocket.rocket_name,
-        type: rocket.rocket_type,
+        id: launch.rocket.rocket_id,
+        name: launch.rocket.rocket_name,
+        type: launch.rocket.rocket_type,
       },
     };
   }
