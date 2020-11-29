@@ -23,6 +23,46 @@ module.exports = {
       dataSources.launchAPI.getLaunchById({ launchId }),
     me: (_, __, { dataSources }) => dataSources.userAPI.findOrCreateUser(),
   },
+  Mutation: {
+    login: async (_, { email }, { dataSources }) => {
+      const user = await dataSources.userAPI.findOrCreateUser({ email });
+      if (user) {
+        user.token = Buffer.from(email).toString("base64");
+        return user;
+      }
+    },
+    bookTrips: async (_, { launchIds }, { dataSources }) => {
+      const results = await dataSources.userAPI.bookTrips({ launchIds });
+      const launches = await dataSources.launchAPI.getLaunchesById({
+        launchIds,
+      });
+      const success = results && results.length === launchIds.length;
+      const notBookedLaunches = launchIds.filter((id) => !results.includes(id));
+      return {
+        success,
+        message: success
+          ? "trips booked successfully"
+          : `the following launches couldn't be booked: ${notBookedLaunches}`,
+        launches,
+      };
+    },
+    cancelTrip: async (_, { launchId }, { dataSources }) => {
+      const result = await dataSources.userAPI.cancelTrip({ launchId });
+      if (!result) {
+        return {
+          success: false,
+          message: "failed to cancel trip",
+        };
+      }
+
+      const launch = await dataSources.launchAPI.getLaunchById({ launchId });
+      return {
+        success: true,
+        message: "trip cancelled",
+        launches: [launch],
+      };
+    },
+  },
   Mission: {
     missionPatch: (mission, { size } = { size: "LARGE" }) =>
       size === "SMALL" ? mission.missionPatchSmall : mission.missionPatchLarge,
