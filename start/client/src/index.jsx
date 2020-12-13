@@ -2,7 +2,7 @@ import { ApolloClient, ApolloProvider } from "@apollo/client";
 import { cache } from "./cache";
 import React from "react";
 import ReactDOM from "react-dom";
-import Pages from "./pages";
+import Pages from "./pages/index.jsx";
 import injectStyles from "./styles";
 
 const client = new ApolloClient({
