@@ -8,6 +8,9 @@ import injectStyles from "./styles";
 const client = new ApolloClient({
   cache,
   uri: "http://localhost:3000/graphql",
+  headers: {
+    authorization: localStorage.getItem("token") || "",
+  },
 });
 
 ReactDOM.render(

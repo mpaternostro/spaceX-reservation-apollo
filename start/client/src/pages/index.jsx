@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
 import { Router } from "@reach/router";
 
-import Launch from "./launch";
-import Launches from "./launches";
+import Launch from "./launch.jsx";
+import Launches from "./launches.jsx";
 import Cart from "./cart";
-import Profile from "./profile";
+import Profile from "./profile.jsx";
 import { Footer, PageContainer } from "../components";
 
 export default function Pages() {
