@@ -14,6 +14,7 @@ const typeDefs = gql`
   }
 
   type Token {
+    id: String
     token: String
   }
 
